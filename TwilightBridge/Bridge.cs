@@ -36,20 +36,38 @@ namespace TwilightBridge
 
         public void RunLongTest()
         {
+            // Resets known states
             _states = new HashSet<ulong>();
-
-            List<ulong> history = new List<ulong>();
-            history.Add(_start);
-
             _states.Add(_start);
+            
+            HashSet<ulong> path = new HashSet<ulong>();
+            path.Add(_start);
 
-            List<ulong> nextStates = new List<ulong>();
-            nextStates = Expand(_end);
-            nextStates = Expand(_start);
+            List<ulong> fringe = new List<ulong>();
+            fringe = Expand(_start, path);
 
+            int success = 0;
+
+            while (fringe.Count > 0)
+            {
+                // Successful path found
+                if (fringe[0] == _end)
+                {
+                    success++;
+                    path.Clear();
+                }
+
+                List<ulong> nextStates = Expand(fringe[0], path);
+                fringe.RemoveAt(0);
+                fringe.AddRange(nextStates);
+
+                //break;
+            }
+
+            Console.WriteLine("Finished!");
         }
 
-        private List<ulong> Expand(ulong state)
+        private List<ulong> Expand(ulong state, HashSet<ulong> path)
         {
             List<ulong> children = new List<ulong>();
 
@@ -83,10 +101,10 @@ namespace TwilightBridge
                 {
                     for (int j = i + 1; j < children.Count; j++)
                     {
-                        ulong newState = children[i] + children[j] + 1;
+                        ulong newState = (children[i] | children[j]) + 1;
 
                         // State is added to returned children if state is actually new
-                        if (_states.Add(newState))
+                        if (path.Add(newState))
                             subChildren.Add(newState);
                     }
                 }
@@ -106,7 +124,7 @@ namespace TwilightBridge
                         ulong newState = ~canCross & nextState;
 
                         // State is added to returned children if state is actually new
-                        if (_states.Add(newState))
+                        if (path.Add(newState))
                             children.Add(newState);
                     }
                 }
