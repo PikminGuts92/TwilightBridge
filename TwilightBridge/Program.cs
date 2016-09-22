@@ -11,7 +11,10 @@ namespace TwilightBridge
         static void Main(string[] args)
         {
             Bridge sim = new Bridge(4);
-            sim.RunLongTest();
+            //sim.RunLongTest();
+            sim.Run();
+            Console.ReadKey();
+            
         }
     }
 }

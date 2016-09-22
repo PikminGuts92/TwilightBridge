@@ -8,10 +8,11 @@ namespace TwilightBridge
 {
     public class Bridge
     {
-        HashSet<ulong> _states;
         private ulong _start;
         private ulong _end;
         private int[] _costs;
+        List<List<ulong>> _winPaths;
+
 
         public Bridge(int numCost)
         {
@@ -36,9 +37,7 @@ namespace TwilightBridge
 
         public void RunLongTest()
         {
-            // Resets known states
-            _states = new HashSet<ulong>();
-            _states.Add(_start);
+            _winPaths = new List<List<ulong>>();
 
             List<ulong> history = new List<ulong>();
             history.Add(_start);
@@ -63,7 +62,7 @@ namespace TwilightBridge
                 {
                     success++;
                     //path.Remove(fringe[0]);
-                    WriteOutCost(history);
+                    GetTotalCost(history);
                 }
                 else
                 {
@@ -78,10 +77,68 @@ namespace TwilightBridge
                 //break;
             }
 
-            Console.WriteLine("Finished!");
+            Console.WriteLine("\r\nFinished!");
         }
 
-        private void WriteOutCost(List<ulong> states)
+        public void Run()
+        {
+            _winPaths = new List<List<ulong>>();
+            HashSet<ulong> path = new HashSet<ulong>();
+
+            RecursiveRun(_start, path);
+
+            Console.WriteLine("\r\nFinished!");
+
+            List<ulong> quickestPath = null;
+            int smallestCost = -1;
+
+            foreach(List<ulong> winPath in _winPaths)
+            {
+                if (quickestPath == null)
+                {
+                    quickestPath = winPath;
+                    smallestCost = GetTotalCost(winPath);
+                    continue;
+                }
+
+                int cost = GetTotalCost(winPath);
+
+                if (cost < smallestCost)
+                {
+                    quickestPath = winPath;
+                    smallestCost = cost;
+                }
+            }
+
+            Console.WriteLine("Shortest path is {0} minutes", smallestCost);
+        }
+
+        private void RecursiveRun(ulong state, HashSet<ulong> path)
+        {
+            // Adds state to hash set
+            path.Add(state);
+
+            if (state == _end)
+            {
+                // Goal reached
+                _winPaths.Add(new List<ulong>(path));
+            }
+            else
+            {
+                // Expands state
+                List<ulong> children = Expand(state, path);
+
+                foreach (ulong child in children)
+                {
+                    RecursiveRun(child, path);
+                }
+            }
+
+            // Removes state from hash set
+            path.Remove(state);
+        }
+
+        private int GetTotalCost(List<ulong> states)
         {
             int totalCost = 0;
 
@@ -105,7 +162,8 @@ namespace TwilightBridge
                 previousState = states[i];
                 totalCost += stepCost;
             }
-            
+
+            return totalCost;
         }
 
         private List<ulong> Expand(ulong state, HashSet<ulong> path)
