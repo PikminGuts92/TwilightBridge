@@ -39,7 +39,10 @@ namespace TwilightBridge
             // Resets known states
             _states = new HashSet<ulong>();
             _states.Add(_start);
-            
+
+            List<ulong> history = new List<ulong>();
+            history.Add(_start);
+
             HashSet<ulong> path = new HashSet<ulong>();
             path.Add(_start);
 
@@ -50,11 +53,22 @@ namespace TwilightBridge
 
             while (fringe.Count > 0)
             {
+                foreach(ulong state in fringe)
+                {
+
+                }
+
                 // Successful path found
                 if (fringe[0] == _end)
                 {
                     success++;
-                    path.Clear();
+                    //path.Remove(fringe[0]);
+                    WriteOutCost(history);
+                }
+                else
+                {
+                    path.Add(fringe[0]);
+                    history.Add(fringe[0]);
                 }
 
                 List<ulong> nextStates = Expand(fringe[0], path);
@@ -65,6 +79,33 @@ namespace TwilightBridge
             }
 
             Console.WriteLine("Finished!");
+        }
+
+        private void WriteOutCost(List<ulong> states)
+        {
+            int totalCost = 0;
+
+            ulong previousState = states[0];
+
+            for (int i = 1; i < states.Count; i++)
+            {
+                previousState = previousState ^ states[i];
+
+                ulong currentBit = 1;
+                int stepCost = 0;
+
+                for (int j = 0; j < _costs.Length; j++)
+                {
+                    currentBit = currentBit << 1;
+
+                    if ((currentBit & previousState) != 0 && _costs[j] > stepCost)
+                        stepCost = _costs[j];
+                }
+
+                previousState = states[i];
+                totalCost += stepCost;
+            }
+            
         }
 
         private List<ulong> Expand(ulong state, HashSet<ulong> path)
@@ -104,7 +145,7 @@ namespace TwilightBridge
                         ulong newState = (children[i] | children[j]) + 1;
 
                         // State is added to returned children if state is actually new
-                        if (path.Add(newState))
+                        if (!path.Contains(newState))
                             subChildren.Add(newState);
                     }
                 }
@@ -124,7 +165,7 @@ namespace TwilightBridge
                         ulong newState = ~canCross & nextState;
 
                         // State is added to returned children if state is actually new
-                        if (path.Add(newState))
+                        if (!path.Contains(newState))
                             children.Add(newState);
                     }
                 }
