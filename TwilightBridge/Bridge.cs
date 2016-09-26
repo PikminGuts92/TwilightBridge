@@ -52,7 +52,7 @@ namespace TwilightBridge
 
             while (fringe.Count > 0)
             {
-                foreach(ulong state in fringe)
+                foreach (ulong state in fringe)
                 {
 
                 }
@@ -87,7 +87,7 @@ namespace TwilightBridge
 
             RecursiveRun(_start, path);
 
-            Console.WriteLine("\r\nFinished!");
+            //Console.WriteLine("\r\nFinished!");
 
             List<ulong> quickestPath = null;
             int smallestCost = -1;
@@ -110,7 +110,32 @@ namespace TwilightBridge
                 }
             }
 
-            Console.WriteLine("Shortest path is {0} minutes", smallestCost);
+            Console.WriteLine("Out of {0} paths, shortest path is {1} minutes in {2} steps", _winPaths.Count, smallestCost, quickestPath.Count);
+        }
+
+        public void IterativeRun()
+        {
+            _winPaths = new List<List<ulong>>();
+            HashSet<ulong> path = new HashSet<ulong>();
+            
+            List<ulong> fringe = new List<ulong>();
+            fringe.Add(_start);
+
+            do
+            {
+                if (fringe.First() == _end)
+                {
+                    // Goal reached
+                }
+                else
+                    continue;
+
+                
+                List<ulong> moves = Expand(fringe.First(), path);
+
+            } while (fringe.Count > 0);
+
+
         }
 
         private void RecursiveRun(ulong state, HashSet<ulong> path)
