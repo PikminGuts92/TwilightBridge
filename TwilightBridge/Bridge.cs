@@ -11,7 +11,9 @@ namespace TwilightBridge
         private ulong _start;
         private ulong _end;
         private int[] _costs;
-        List<List<ulong>> _winPaths;
+        private List<ulong> _winPath;
+        private int _winCost;
+        private int _winCount;
 
         public Bridge(int numCost)
         {
@@ -36,8 +38,6 @@ namespace TwilightBridge
 
         public void RunLongTest()
         {
-            _winPaths = new List<List<ulong>>();
-
             List<ulong> history = new List<ulong>();
             history.Add(_start);
 
@@ -81,40 +81,42 @@ namespace TwilightBridge
 
         public void Run()
         {
-            _winPaths = new List<List<ulong>>();
+            _winCount = 0;
             HashSet<ulong> path = new HashSet<ulong>();
 
             RecursiveRun(_start, path);
 
             //Console.WriteLine("\r\nFinished!");
 
-            List<ulong> quickestPath = null;
-            int smallestCost = -1;
+            List<ulong> quickestPath = _winPath;
+            int smallestCost = _winCost;
 
-            foreach(List<ulong> winPath in _winPaths)
+            Console.WriteLine("Out of {0} paths, shortest path is {1} minutes in {2} steps", _winCount, smallestCost, quickestPath.Count);
+        }
+
+        private bool SetWinPath(List<ulong> path)
+        {
+            int cost = GetTotalCost(path);
+
+            if (_winPath == null)
             {
-                if (quickestPath == null)
-                {
-                    quickestPath = winPath;
-                    smallestCost = GetTotalCost(winPath);
-                    continue;
-                }
-
-                int cost = GetTotalCost(winPath);
-
-                if (cost < smallestCost)
-                {
-                    quickestPath = winPath;
-                    smallestCost = cost;
-                }
+                _winPath = path;
+                _winCost = cost;
+                return true;
             }
 
-            Console.WriteLine("Out of {0} paths, shortest path is {1} minutes in {2} steps", _winPaths.Count, smallestCost, quickestPath.Count);
+            if (cost < _winCost)
+            {
+                _winPath = path;
+                _winCost = cost;
+                return true;
+            }
+            else
+                return false;
         }
 
         public void IterativeRun()
         {
-            _winPaths = new List<List<ulong>>();
             HashSet<ulong> path = new HashSet<ulong>();
             
             List<ulong> fringe = new List<ulong>();
@@ -145,7 +147,9 @@ namespace TwilightBridge
             if (state == _end)
             {
                 // Goal reached
-                _winPaths.Add(new List<ulong>(path));
+                //_winPaths.Add(new List<ulong>(path));
+                SetWinPath(new List<ulong>(path));
+                _winCount++;
             }
             else
             {
