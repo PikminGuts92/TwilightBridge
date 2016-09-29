@@ -13,7 +13,6 @@ namespace TwilightBridge
         private int[] _costs;
         List<List<ulong>> _winPaths;
 
-
         public Bridge(int numCost)
         {
             _start = 0;
