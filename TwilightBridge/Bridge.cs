@@ -73,28 +73,49 @@ namespace TwilightBridge
                 return false;
         }
 
-        public void IterativeRun()
+        public void IterativeRun(Search search)
         {
-            HashSet<ulong> path = new HashSet<ulong>();
-            
-            List<ulong> fringe = new List<ulong>();
-            fringe.Add(_start);
+            _winCount = 0;
 
-            do
+            // Sets costs
+            State.Cost = _costs;
+
+            // Creates fringe
+            List<State> fringe = new List<State>();
+            fringe.Add(new State(_start));
+
+            while (fringe.Count > 0)
             {
-                if (fringe.First() == _end)
+                State current = fringe.First();
+                fringe.RemoveAt(0);
+
+                if (current.Value == _end)
                 {
                     // Goal reached
+                    _winCount++;
                 }
                 else
-                    continue;
+                {
+                    // Gets possible moves
+                    List<State> moves = current.Expand();
 
-                
-                List<ulong> moves = Expand(fringe.First(), path);
+                    switch (search)
+                    {
+                        case Search.BreadthFirst:
+                            // Adds moves to end of fringe
+                            fringe.AddRange(moves);
+                            break;
+                        case Search.DepthFirst:
+                            // Adds moves to beginning of fringe
+                            fringe.InsertRange(0, moves);
+                            break;
+                        case Search.UniformCost:
+                            break;
+                    }
+                }
+            }
 
-            } while (fringe.Count > 0);
-
-
+            Console.WriteLine("Out of {0} paths, shortest path is {0} minutes in {0} steps", _winCount);
         }
 
         private void RecursiveRun(ulong state, HashSet<ulong> path)
