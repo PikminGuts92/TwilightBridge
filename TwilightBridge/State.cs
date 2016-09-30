@@ -56,6 +56,9 @@ namespace TwilightBridge
                 // Sets path
                 state._path = new HashSet<ulong>(_path);
                 state._path.Add(child);
+
+                // Adds state
+                _childrenStates.Add(state);
             }
 
             return _childrenStates;
@@ -129,5 +132,7 @@ namespace TwilightBridge
         }
 
         public static int[] Cost { get { return _costs; } set { _costs = value; } }
+
+        public ulong Value { get { return _state; } }
     }
 }
