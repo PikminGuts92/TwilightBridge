@@ -10,38 +10,46 @@ namespace TwilightBridge
     {
         private ulong _start;
         private ulong _end;
-        private int[] _costs;
+        private Search _search;
+
         private State _winState;
         private int _winCount;
 
-        public Bridge(int numCost)
+        public Bridge()
         {
+               
+        }
+
+        public void SetCosts(int[] costs)
+        {
+            State.Cost = costs;
             _start = 0;
             _end = 1;
-            _costs = new int[numCost];
 
-            ulong endCost = 1;
+            ulong currentBit = 1;
 
-            for (int i = 0; i < numCost; i++)
+            for (int i = 0; i < costs.Length; i++)
             {
-                endCost = endCost << 1;
-                _end = _end + endCost;
-
-                // Gets cost input from user
-                Console.WriteLine("Enter cost for person {0}: ", i + 1);
-                string input = Console.ReadLine();
-
-                _costs[i] = Convert.ToInt32(input);
+                // Sets end state
+                currentBit = currentBit << 1;
+                _end = _end + currentBit;
             }
         }
         
+        public void SetSearch(Search search)
+        {
+            _search = search;
+        }
+        
+        public void IterativeRun()
+        {
+            IterativeRun(_search);
+        }
+
         public void IterativeRun(Search search)
         {
             _winCount = 0;
             _winState = null;
-
-            // Sets costs
-            State.Cost = _costs;
 
             // Creates fringe
             List<State> fringe = new List<State>();
