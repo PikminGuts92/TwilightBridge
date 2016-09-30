@@ -10,7 +10,7 @@ namespace TwilightBridge
     {
         static void Main(string[] args)
         {
-            Bridge sim = new Bridge(6);
+            Bridge sim = new Bridge(4);
             //sim.RunLongTest();
             //sim.Run();
             sim.IterativeRun(Search.DepthFirst);
