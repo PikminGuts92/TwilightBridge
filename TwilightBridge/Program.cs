@@ -13,7 +13,7 @@ namespace TwilightBridge
             Bridge sim = new Bridge(4);
             //sim.RunLongTest();
             //sim.Run();
-            sim.IterativeRun(Search.DepthFirst);
+            sim.IterativeRun(Search.UniformCost);
             Console.ReadKey();
         }
 

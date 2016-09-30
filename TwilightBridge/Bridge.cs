@@ -59,6 +59,9 @@ namespace TwilightBridge
 
                     if (_winState == null || _winState.TotalCost > current.TotalCost)
                         _winState = current;
+
+                    if (search == Search.UniformCost)
+                        break; // Should be best route?
                 }
                 else
                 {
@@ -76,6 +79,15 @@ namespace TwilightBridge
                             fringe.InsertRange(0, moves);
                             break;
                         case Search.UniformCost:
+                            // Adds moves to fringe
+                            fringe.AddRange(moves);
+
+                            // Sorts list by total cost
+                            fringe.Sort(delegate (State a, State b)
+                            {
+                                return a.TotalCost.CompareTo(b.TotalCost);
+                            });
+
                             break;
                     }
                 }
