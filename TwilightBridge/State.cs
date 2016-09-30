@@ -11,6 +11,9 @@ namespace TwilightBridge
         private static int[] _costs; // Globally used
         private ulong _state;
         HashSet<ulong> _path;
+
+        private int _totalCost;
+        private int _moveCost;
         
         private State()
         {
@@ -22,23 +25,30 @@ namespace TwilightBridge
             _state = state;
             _path = new HashSet<ulong>();
             _path.Add(state);
+
+            _totalCost = 0;
+            _moveCost = 0;
         }
-
-        public static bool operator==(State a, State b)
+        
+        private int CalculateCost(ulong state1, ulong state2)
         {
-            return a._state == b._state;
-        }
+            int moveCost = 0;
 
-        public static bool operator !=(State a, State b)
-        {
-            return !(a == b);
-        }
+            ulong difference = state1 ^ state2;
+            ulong currentBit = 1;
 
-        public override bool Equals(object obj)
-        {
-            if (!(obj is State)) return false;
+            if ((difference & currentBit) == 0)
+                return moveCost; // State didn't alternate (Torch on same side)
+            
+            for (int j = 0; j < _costs.Length; j++)
+            {
+                currentBit = currentBit << 1;
 
-            return ((State)obj)._state == _state;
+                if ((currentBit & difference) != 0 && _costs[j] > moveCost)
+                    moveCost = _costs[j];
+            }
+            
+            return moveCost;
         }
 
         public List<State> Expand()
@@ -56,6 +66,10 @@ namespace TwilightBridge
                 // Sets path
                 state._path = new HashSet<ulong>(_path);
                 state._path.Add(child);
+
+                // Calculates move cost
+                state._moveCost = CalculateCost(_path.Last(), child);
+                state._totalCost = _totalCost + state._moveCost;
 
                 // Adds state
                 _childrenStates.Add(state);
@@ -134,5 +148,10 @@ namespace TwilightBridge
         public static int[] Cost { get { return _costs; } set { _costs = value; } }
 
         public ulong Value { get { return _state; } }
+
+        public int TotalCost { get { return _totalCost; } }
+        public int MoveCost { get { return _moveCost; } }
+
+        public int TotalMoves { get { return _path.Count - 1; } }
     }
 }
