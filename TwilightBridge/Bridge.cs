@@ -36,52 +36,10 @@ namespace TwilightBridge
             }
         }
 
-        public void RunLongTest()
-        {
-            List<ulong> history = new List<ulong>();
-            history.Add(_start);
-
-            HashSet<ulong> path = new HashSet<ulong>();
-            path.Add(_start);
-
-            List<ulong> fringe = new List<ulong>();
-            fringe = Expand(_start, path);
-
-            int success = 0;
-
-            while (fringe.Count > 0)
-            {
-                foreach (ulong state in fringe)
-                {
-
-                }
-
-                // Successful path found
-                if (fringe[0] == _end)
-                {
-                    success++;
-                    //path.Remove(fringe[0]);
-                    GetTotalCost(history);
-                }
-                else
-                {
-                    path.Add(fringe[0]);
-                    history.Add(fringe[0]);
-                }
-
-                List<ulong> nextStates = Expand(fringe[0], path);
-                fringe.RemoveAt(0);
-                fringe.AddRange(nextStates);
-
-                //break;
-            }
-
-            Console.WriteLine("\r\nFinished!");
-        }
-
         public void Run()
         {
             _winCount = 0;
+            _winCost = 0;
             HashSet<ulong> path = new HashSet<ulong>();
 
             RecursiveRun(_start, path);
