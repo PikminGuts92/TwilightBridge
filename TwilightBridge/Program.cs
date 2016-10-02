@@ -61,12 +61,43 @@ namespace TwilightBridge
                         break;
                     case 'r':
                     case 'R':
-                        sim.Run();
+                        // Runs search and outputs result
+                        Result result = sim.Run();
+                        OutputResult(result);
                         break;
                 }
 
 
             } while (c != 'x' && c != 'X');
+        }
+
+        static void OutputResult(Result result)
+        {
+            Console.WriteLine("=======================");
+            Console.Write("Search Type: ");
+
+            // Outputs search type
+            switch (result.SearchType)
+            {
+                case Search.BreadthFirst:
+                    Console.WriteLine("Breadth-First");
+                    break;
+                case Search.DepthFirst:
+                    Console.WriteLine("Depth-First");
+                    break;
+                case Search.UniformCost:
+                    Console.WriteLine("Uniform Cost");
+                    break;
+                default:
+                    Console.WriteLine(result.SearchType);
+                    break;
+            }
+
+            Console.WriteLine("Total Moves: {0}", result.WinPath.TotalMoves);
+            Console.WriteLine("Shortest Path: {0}", result.WinPath.TotalCost);
+            Console.WriteLine("Compute Time: {0}", result.ComputeTime);
+
+            Console.WriteLine("=======================");
         }
 
         static int InputCount()
@@ -114,7 +145,7 @@ namespace TwilightBridge
             // Displays search types to user
             Console.WriteLine();
             Console.WriteLine("Search Types:");
-            Console.WriteLine("\t\'b\' - Breath-First");
+            Console.WriteLine("\t\'b\' - Breadth-First");
             Console.WriteLine("\t\'d\' - Depth-First");
             Console.WriteLine("\t\'u\' - Uniform Cost");
             Console.WriteLine();
@@ -135,7 +166,7 @@ namespace TwilightBridge
                     case 'B':
                         // Sets BFS
                         sim.SetSearch(Search.BreadthFirst);
-                        Console.WriteLine("Breath-First search set!");
+                        Console.WriteLine("Breadth-First search set!");
                         break;
                     case 'd':
                     case 'D':
