@@ -108,14 +108,14 @@ namespace TwilightBridge
             do
             {
                 // Gets count input from user
-                Console.Write("Enter number of people: ");
+                Console.Write("Enter number of people (n > 1): ");
                 string input = Console.ReadLine();
 
                 // Converts string to int
                 if (!Int32.TryParse(input, out count))
                     count = 0;
 
-            } while (count < 1);
+            } while (count < 2);
 
             return count;
         }
