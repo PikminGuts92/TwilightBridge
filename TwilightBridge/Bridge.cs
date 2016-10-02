@@ -17,7 +17,7 @@ namespace TwilightBridge
 
         public Bridge()
         {
-               
+            _search = Search.DepthFirst; // Default search
         }
 
         public void SetCosts(int[] costs)
@@ -40,13 +40,8 @@ namespace TwilightBridge
         {
             _search = search;
         }
-        
-        public void IterativeRun()
-        {
-            IterativeRun(_search);
-        }
 
-        public void IterativeRun(Search search)
+        public void Run()
         {
             _winCount = 0;
             _winState = null;
@@ -68,7 +63,7 @@ namespace TwilightBridge
                     if (_winState == null || _winState.TotalCost > current.TotalCost)
                         _winState = current;
 
-                    if (search == Search.UniformCost)
+                    if (_search == Search.UniformCost)
                         break; // Should be best route?
                 }
                 else
@@ -76,7 +71,7 @@ namespace TwilightBridge
                     // Gets possible moves
                     List<State> moves = current.Expand();
 
-                    switch (search)
+                    switch (_search)
                     {
                         case Search.BreadthFirst:
                             // Adds moves to end of fringe
