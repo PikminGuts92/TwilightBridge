@@ -96,7 +96,7 @@ namespace TwilightBridge
 
             Console.WriteLine("Shortest Path: {0} mins in {1} moves", result.WinPath.TotalCost, result.WinPath.TotalMoves);
             Console.WriteLine("Fringe Iterations: {0}", result.FringeIterations);
-            Console.WriteLine("Compute Time: {0} ms", result.ComputeTime);
+            Console.WriteLine("Compute Time: {0} ticks ({1} ms)", result.ComputeTimeTicks, result.ComputeTime);
 
             Console.WriteLine("=======================");
         }
