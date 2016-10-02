@@ -41,8 +41,10 @@ namespace TwilightBridge
             _search = search;
         }
 
-        public void Run()
+        public Result Run()
         {
+            int startTime = DateTime.Now.Millisecond;
+
             _winCount = 0;
             _winState = null;
 
@@ -96,7 +98,8 @@ namespace TwilightBridge
                 }
             }
 
-            Console.WriteLine("Out of {0} paths, shortest path is {1} minutes in {2} steps", _winCount, _winState.TotalCost, _winState.TotalMoves);
+            // Returns run results
+            return new Result(_winState, _search, DateTime.Now.Millisecond - startTime);
         }
         
     }
