@@ -48,6 +48,8 @@ namespace TwilightBridge
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            // Resets results
+            long fringeItr = 0;
             _winCount = 0;
             _winState = null;
 
@@ -57,6 +59,8 @@ namespace TwilightBridge
 
             while (fringe.Count > 0)
             {
+                fringeItr++; // Adds to counter
+
                 State current = fringe.First();
                 fringe.RemoveAt(0);
 
@@ -105,7 +109,7 @@ namespace TwilightBridge
             stopwatch.Stop();
 
             // Returns run results
-            return new Result(_winState, _search, stopwatch.ElapsedMilliseconds);
+            return new Result(_winState, _search, stopwatch.ElapsedMilliseconds, State.Cost.Length, fringeItr);
         }
         
     }
