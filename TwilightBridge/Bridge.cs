@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics; // Stopwatch
 
 namespace TwilightBridge
 {
@@ -43,7 +44,9 @@ namespace TwilightBridge
 
         public Result Run()
         {
-            int startTime = DateTime.Now.Millisecond;
+            // Starts timer
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             _winCount = 0;
             _winState = null;
@@ -98,8 +101,11 @@ namespace TwilightBridge
                 }
             }
 
+            // Stops timer
+            stopwatch.Stop();
+
             // Returns run results
-            return new Result(_winState, _search, DateTime.Now.Millisecond - startTime);
+            return new Result(_winState, _search, stopwatch.ElapsedMilliseconds);
         }
         
     }
