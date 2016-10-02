@@ -10,15 +10,17 @@ namespace TwilightBridge
     {
         private readonly State _winState;
         private readonly Search _searchType;
-        private readonly long _computeTime; // In milliseconds
+        private readonly long _computeTime; // Milliseconds
+        private readonly long _computTimeTicks; // Ticks
         private readonly int _numPeople;
         private readonly long _fringeItr;
 
-        public Result(State winState, Search searchType, long computeTime, int numPeople, long fringeItr)
+        public Result(State winState, Search searchType, long computeTime, long computeTimeTicks, int numPeople, long fringeItr)
         {
             _winState = winState;
             _searchType = searchType;
             _computeTime = computeTime;
+            _computTimeTicks = computeTimeTicks;
             _numPeople = numPeople;
             _fringeItr = fringeItr;
         }
@@ -26,6 +28,7 @@ namespace TwilightBridge
         public State WinPath { get { return _winState; } }
         public Search SearchType { get { return _searchType; } }
         public long ComputeTime { get { return _computeTime; } }
+        public long ComputeTimeTicks { get { return _computTimeTicks; } }
         public int NumberOfPeople { get { return _numPeople; } }
         public long FringeIterations { get { return _fringeItr; } }
     }
