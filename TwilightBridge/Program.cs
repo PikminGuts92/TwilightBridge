@@ -61,7 +61,7 @@ namespace TwilightBridge
                         break;
                     case 'r':
                     case 'R':
-                        sim.IterativeRun();
+                        sim.Run();
                         break;
                 }
 
