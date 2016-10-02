@@ -109,7 +109,15 @@ namespace TwilightBridge
 
         static void InputSearch(Bridge sim)
         {
-            int searchNum;
+            char c;
+
+            // Displays search types to user
+            Console.WriteLine();
+            Console.WriteLine("Search Types:");
+            Console.WriteLine("\t\'b\' - Breath-First");
+            Console.WriteLine("\t\'d\' - Depth-First");
+            Console.WriteLine("\t\'u\' - Uniform Cost");
+            Console.WriteLine();
 
             do
             {
@@ -117,24 +125,36 @@ namespace TwilightBridge
                 Console.Write("Enter search type: ");
                 string input = Console.ReadLine();
 
-                // Converts string to int
-                if (!Int32.TryParse(input, out searchNum))
-                    searchNum = -1;
+                // Converts string to char
+                if (!Char.TryParse(input, out c))
+                    c = '0';
 
-                switch(searchNum)
+                switch (c)
                 {
-                    case 0:
+                    case 'b':
+                    case 'B':
+                        // Sets BFS
                         sim.SetSearch(Search.BreadthFirst);
+                        Console.WriteLine("Breath-First search set!");
                         break;
-                    case 1:
+                    case 'd':
+                    case 'D':
+                        // Sets DFS
                         sim.SetSearch(Search.DepthFirst);
+                        Console.WriteLine("Depth-First search set!");
                         break;
-                    case 2:
+                    case 'u':
+                    case 'U':
+                        // Sets UCS
                         sim.SetSearch(Search.UniformCost);
+                        Console.WriteLine("Uniform Cost search set!");
+                        break;
+                    default:
+                        c = '0';
                         break;
                 }
 
-            } while (searchNum < 0 || searchNum > 2);
+            } while (c == '0');
 
         }
     }
