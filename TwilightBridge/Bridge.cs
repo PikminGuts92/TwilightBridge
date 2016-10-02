@@ -109,7 +109,7 @@ namespace TwilightBridge
             stopwatch.Stop();
 
             // Returns run results
-            return new Result(_winState, _search, stopwatch.ElapsedMilliseconds, State.Cost.Length, fringeItr);
+            return new Result(_winState, _search, stopwatch.ElapsedMilliseconds, stopwatch.ElapsedTicks, State.Cost.Length, fringeItr);
         }
         
     }
