@@ -51,10 +51,6 @@ namespace TwilightBridge
                 // Shows run only after cost is set
                 if (costSet) Console.WriteLine("\t\'r\' - Run");
 
-
-                // Shows win state only after bridge search is ran once
-                if (sim.WinState != null) Console.WriteLine("\t\'w\' - View shortest path");
-
                 Console.WriteLine("\t\'x\' - Exit");
                 Console.WriteLine();
 
@@ -100,12 +96,6 @@ namespace TwilightBridge
                             OutputResult(result);
                         }
                         break;
-                    case 'w':
-                    case 'W':
-                        // Shows path
-                        if (sim.WinState != null)
-                            sim.WinState.DisplayPath();
-                        break;
                 }
 
 
@@ -114,7 +104,8 @@ namespace TwilightBridge
 
         static void OutputResult(Result result)
         {
-            Console.WriteLine("=======================");
+            Console.WriteLine();
+            Console.WriteLine("=====================================");
             Console.WriteLine("Number of People: {0}", result.NumberOfPeople);
             Console.Write("Search Type: ");
 
@@ -138,8 +129,11 @@ namespace TwilightBridge
             Console.WriteLine("Shortest Path: {0} mins in {1} moves", result.WinPath.TotalCost, result.WinPath.TotalMoves);
             Console.WriteLine("Fringe Iterations: {0}", result.FringeIterations);
             Console.WriteLine("Compute Time: {0} ticks ({1} ms)", result.ComputeTimeTicks, result.ComputeTime);
+            Console.WriteLine();
 
-            Console.WriteLine("=======================");
+            result.WinPath.DisplayPath();
+
+            Console.WriteLine("=====================================");
         }
 
         static int InputCount()
