@@ -201,19 +201,19 @@ namespace TwilightBridge
                     case 'b':
                     case 'B':
                         // Sets BFS
-                        sim.SetSearch(Search.BreadthFirst);
+                        sim.SearchType = Search.BreadthFirst;
                         Console.WriteLine("Breadth-First search set!");
                         break;
                     case 'd':
                     case 'D':
                         // Sets DFS
-                        sim.SetSearch(Search.DepthFirst);
+                        sim.SearchType = Search.DepthFirst;
                         Console.WriteLine("Depth-First search set!");
                         break;
                     case 'u':
                     case 'U':
                         // Sets UCS
-                        sim.SetSearch(Search.UniformCost);
+                        sim.SearchType = Search.UniformCost;
                         Console.WriteLine("Uniform Cost search set!");
                         break;
                     default:
