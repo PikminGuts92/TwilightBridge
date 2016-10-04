@@ -145,6 +145,74 @@ namespace TwilightBridge
             return children;
         }
 
+        public void DisplayPath()
+        {
+            string[] costNames = new string[_costs.Length + 1];
+            int lengthCostNames = 0;
+
+            // Generates unique names
+            for (int i = 0; i < costNames.Length; i++)
+            {
+                if (i == 0) // Torch
+                    costNames[i] = "*";
+                else
+                    costNames[i] = GetName(i - 1);
+
+                lengthCostNames += costNames[i].Length;
+            }
+
+            Console.WriteLine("Cost {0}       Right", "Left".PadRight(lengthCostNames + costNames.Length));
+
+            ulong previousState = _path.First();
+            int runningCost = 0;
+
+            foreach(ulong state in _path)
+            {
+                string leftSide = "";
+                string rightSide = "";
+
+                ulong currentBit = 1;
+
+                for (int i = 0; i <= _costs.Length; i++)
+                {
+                    if ((currentBit & state) == 0)
+                    {
+                        // 0 = left side, else right side
+                        leftSide += costNames[i] + " ";
+                        rightSide += new string(' ', costNames[i].Length + 1);
+                    }
+                    else
+                    {
+                        leftSide += new string(' ', costNames[i].Length + 1);
+                        rightSide += costNames[i] + " ";
+                    }
+
+                    currentBit = currentBit << 1;
+                }
+
+                runningCost += CalculateCost(previousState, state);
+
+                Console.WriteLine("{0} {1}------ {2}", runningCost.ToString().PadLeft(4, ' '), leftSide, rightSide);
+                previousState = state;
+            }
+        }
+
+        private string GetName(int idx)
+        {
+            string name = "";
+
+            // Generates unique name for idx
+            while (idx > -1)
+            {
+                int ch = idx % 26;
+                
+                name += Convert.ToChar('a' + ch);
+                idx = idx - 26;
+            }
+
+            return name;
+        }
+
         public static int[] Cost { get { return _costs; } set { _costs = value; } }
 
         public ulong Value { get { return _state; } }
