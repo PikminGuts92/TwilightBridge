@@ -19,6 +19,7 @@ namespace TwilightBridge
         public Bridge()
         {
             _search = Search.DepthFirst; // Default search
+            _winState = null;
         }
 
         public void SetCosts(int[] costs)
@@ -111,8 +112,8 @@ namespace TwilightBridge
             // Returns run results
             return new Result(_winState, _search, stopwatch.ElapsedMilliseconds, stopwatch.ElapsedTicks, State.Cost.Length, fringeItr);
         }
-        
 
         public Search SearchType { get { return _search; } }
+        public State WinState { get { return _winState; }
     }
 }
