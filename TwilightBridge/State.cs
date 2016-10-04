@@ -6,6 +6,20 @@ using System.Threading.Tasks;
 
 namespace TwilightBridge
 {
+    /* State is stored as a 64-bit integer
+     * 1) Bit0 = torch
+     * 2) The rest are n people
+     * ===================================
+     * Ex: n = 4
+     *  Start: 00000 End: 11111
+     *  
+     *  State    Expanded
+     *  --------------------------------------------
+     *  00000 -> 00111 01011 10011 01101 10101 11001
+     *  00111 -> 00100 00010
+     *  01011 -> 01000 00010
+     */
+
     public class State
     {
         private static int[] _costs; // Globally used
@@ -20,6 +34,10 @@ namespace TwilightBridge
 
         }
 
+        /// <summary>
+        /// Constructor for State
+        /// </summary>
+        /// <param name="state"></param>
         public State(ulong state)
         {
             _state = state;
@@ -30,6 +48,12 @@ namespace TwilightBridge
             _moveCost = 0;
         }
         
+        /// <summary>
+        /// Calculates cost between two states
+        /// </summary>
+        /// <param name="state1">State 1</param>
+        /// <param name="state2">State 2</param>
+        /// <returns>Cost</returns>
         private int CalculateCost(ulong state1, ulong state2)
         {
             int moveCost = 0;
@@ -51,6 +75,10 @@ namespace TwilightBridge
             return moveCost;
         }
 
+        /// <summary>
+        /// Expands state (Finds possible moves)
+        /// </summary>
+        /// <returns></returns>
         public List<State> Expand()
         {
             // Gets all possible int64 move states
@@ -145,6 +173,9 @@ namespace TwilightBridge
             return children;
         }
 
+        /// <summary>
+        /// Displays path to console
+        /// </summary>
         public void DisplayPath()
         {
             string[] costNames = new string[_costs.Length + 1];
@@ -213,13 +244,29 @@ namespace TwilightBridge
             return name;
         }
 
+        /// <summary>
+        /// Gets cost
+        /// </summary>
         public static int[] Cost { get { return _costs; } set { _costs = value; } }
 
+        /// <summary>
+        /// Gets ulong value
+        /// </summary>
         public ulong Value { get { return _state; } }
 
+        /// <summary>
+        /// Gets total running cost
+        /// </summary>
         public int TotalCost { get { return _totalCost; } }
+
+        /// <summary>
+        /// Gets cost of previous move
+        /// </summary>
         public int MoveCost { get { return _moveCost; } }
 
+        /// <summary>
+        /// Gets total move count
+        /// </summary>
         public int TotalMoves { get { return _path.Count - 1; } }
     }
 }
