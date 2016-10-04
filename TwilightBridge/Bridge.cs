@@ -114,6 +114,6 @@ namespace TwilightBridge
         }
 
         public Search SearchType { get { return _search; } }
-        public State WinState { get { return _winState; }
+        public State WinState { get { return _winState; } }
     }
 }
