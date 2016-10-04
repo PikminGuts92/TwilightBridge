@@ -48,7 +48,13 @@ namespace TwilightBridge
                         break;
                 }
 
+                // Shows run only after cost is set
                 if (costSet) Console.WriteLine("\t\'r\' - Run");
+
+
+                // Shows win state only after bridge search is ran once
+                if (sim.WinState != null) Console.WriteLine("\t\'w\' - View shortest path");
+
                 Console.WriteLine("\t\'x\' - Exit");
                 Console.WriteLine();
 
@@ -93,6 +99,12 @@ namespace TwilightBridge
                             Result result = sim.Run();
                             OutputResult(result);
                         }
+                        break;
+                    case 'w':
+                    case 'W':
+                        // Shows path
+                        if (sim.WinState != null)
+                            sim.WinState.DisplayPath();
                         break;
                 }
 
