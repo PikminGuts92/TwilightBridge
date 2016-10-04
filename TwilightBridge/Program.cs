@@ -131,6 +131,22 @@ namespace TwilightBridge
             Console.WriteLine("Compute Time: {0} ticks ({1} ms)", result.ComputeTimeTicks, result.ComputeTime);
             Console.WriteLine();
 
+            Console.Write("Costs = { ");
+
+            int[] costs = State.Cost;
+
+            // Writes out costs
+            for (int i = 0; i < costs.Length; i++)
+            {
+                if (i == costs.Length - 1)
+                    Console.Write("{0} ", costs[i]);
+                else
+                    Console.Write("{0}, ", costs[i]);
+            }
+
+            Console.WriteLine("}");
+            Console.WriteLine();
+
             result.WinPath.DisplayPath();
 
             Console.WriteLine("=====================================");
