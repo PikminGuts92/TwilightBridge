@@ -112,5 +112,7 @@ namespace TwilightBridge
             return new Result(_winState, _search, stopwatch.ElapsedMilliseconds, stopwatch.ElapsedTicks, State.Cost.Length, fringeItr);
         }
         
+
+        public Search SearchType { get { return _search; } }
     }
 }
