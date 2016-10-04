@@ -16,6 +16,9 @@ namespace TwilightBridge
         private State _winState;
         private int _winCount;
 
+        /// <summary>
+        /// Constructor for Bridge
+        /// </summary>
         public Bridge()
         {
             _search = Search.DepthFirst; // Default search
@@ -25,7 +28,7 @@ namespace TwilightBridge
         /// <summary>
         /// Sets costs and initializes start/end states
         /// </summary>
-        /// <param name="costs"></param>
+        /// <param name="costs">Int32 array of costs</param>
         public void SetCosts(int[] costs)
         {
             State.Cost = costs;
@@ -42,6 +45,10 @@ namespace TwilightBridge
             }
         }
 
+        /// <summary>
+        /// Runs search
+        /// </summary>
+        /// <returns>Result information</returns>
         public Result Run()
         {
             // Starts timer
