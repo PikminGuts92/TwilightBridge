@@ -12,6 +12,7 @@ namespace TwilightBridge
         {
             Console.WriteLine("Twilight Bridge v1.0 by Francisco Martinez");
             Bridge sim = new Bridge();
+            bool costSet = false;
 
             // Input char
             char c;
@@ -21,9 +22,33 @@ namespace TwilightBridge
                 // Displays output to user
                 Console.WriteLine();
                 Console.WriteLine("Options:");
-                Console.WriteLine("\t\'a\' - Set people");
-                Console.WriteLine("\t\'b\' - Set search type");
-                Console.WriteLine("\t\'r\' - Run");
+
+                Console.Write("\t\'a\' - Set people");
+
+                // Appends # of people
+                if (costSet)
+                    Console.WriteLine(" (n = {0})", State.Cost.Length);
+                else
+                    Console.WriteLine(" (n = ?)");
+
+
+                Console.Write("\t\'b\' - Set search type");
+
+                // Appends search type
+                switch(sim.SearchType)
+                {
+                    case Search.BreadthFirst:
+                        Console.WriteLine(" (Breadth-First)");
+                        break;
+                    case Search.DepthFirst:
+                        Console.WriteLine(" (Depth-First)");
+                        break;
+                    case Search.UniformCost:
+                        Console.WriteLine(" (Unifrom Cost)");
+                        break;
+                }
+
+                if (costSet) Console.WriteLine("\t\'r\' - Run");
                 Console.WriteLine("\t\'x\' - Exit");
                 Console.WriteLine();
 
@@ -49,6 +74,7 @@ namespace TwilightBridge
 
                         // Sets costs
                         sim.SetCosts(costs);
+                        costSet = true;
 
                         break;
                     case 'b':
@@ -61,9 +87,12 @@ namespace TwilightBridge
                         break;
                     case 'r':
                     case 'R':
-                        // Runs search and outputs result
-                        Result result = sim.Run();
-                        OutputResult(result);
+                        if (costSet)
+                        {
+                            // Runs search and outputs result
+                            Result result = sim.Run();
+                            OutputResult(result);
+                        }
                         break;
                 }
 
