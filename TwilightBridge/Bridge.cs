@@ -22,6 +22,10 @@ namespace TwilightBridge
             _winState = null;
         }
 
+        /// <summary>
+        /// Sets costs and initializes start/end states
+        /// </summary>
+        /// <param name="costs"></param>
         public void SetCosts(int[] costs)
         {
             State.Cost = costs;
@@ -36,11 +40,6 @@ namespace TwilightBridge
                 currentBit = currentBit << 1;
                 _end = _end + currentBit;
             }
-        }
-        
-        public void SetSearch(Search search)
-        {
-            _search = search;
         }
 
         public Result Run()
@@ -113,7 +112,9 @@ namespace TwilightBridge
             return new Result(_winState, _search, stopwatch.ElapsedMilliseconds, stopwatch.ElapsedTicks, State.Cost.Length, fringeItr);
         }
 
-        public Search SearchType { get { return _search; } }
-        public State WinState { get { return _winState; } }
+        /// <summary>
+        /// Gets or sets search type used in run
+        /// </summary>
+        public Search SearchType { get { return _search; } set { _search = value; } }
     }
 }
